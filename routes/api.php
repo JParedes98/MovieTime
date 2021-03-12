@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MovieController;
+use App\Http\Controllers\MoviePosterController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +17,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('v1')->group(function () {
+    
+    Route::prefix('admin')->group(function () {
+        Route::get('/movies',                        [ MovieController::class, 'getAllMovies'        ]);
+        Route::get('/movies/{movie_id}',             [ MovieController::class, 'getMovieByID'        ]);
+        Route::post('/movies',                       [ MovieController::class, 'storeNewMovie'       ]);
+        Route::put('/movies/{movie_id}',             [ MovieController::class, 'updateMovie'         ]);
+        Route::put('/movies/availability/{movie_id}',[ MovieController::class, 'updateavailability'  ]);
+        Route::delete('/movies/{movie_id}',          [ MovieController::class, 'deleteMovie'         ]);
+
+        Route::prefix('movies/posters')->group(function () {
+            Route::get('/{poster_id}',      [ MoviePosterController::class, 'getMoviePoster']);
+            Route::post('/',                [ MoviePosterController::class, 'storeMoviePoster']);
+            Route::delete('/{poster_id}',   [ MoviePosterController::class, 'deleteMoviePoster']);
+        });
+    });
+
 });

@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 class MovieController extends Controller
 {
+     /**
+     * Create a new MovieController instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('admin_access', [ 'except' => [] ]);
+    }
+
     /**
      * Send a listing of all movies.
      */
@@ -102,7 +111,7 @@ class MovieController extends Controller
     /**
      * Update the availability of the movie with specified ID.
     */
-    public function updateAvailability(Request $request, $movie_id) {
+    public function removeMovie(Request $request, $movie_id) {
         $movie = Movie::findOrFail($movie_id);
             $movie->availability = !$movie->availability;
         $movie->save();

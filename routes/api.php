@@ -18,7 +18,7 @@ use App\Http\Controllers\MoviePosterController;
 |
 */
 
-Route::group([ 'prefix' => 'v1'], function ($router) {
+Route::group([ 'prefix' => 'v1'], function () {
 
     Route::prefix('auth')->group(function () {
         Route::post('/login',       [ AuthController::class, 'login'    ]);
@@ -26,20 +26,22 @@ Route::group([ 'prefix' => 'v1'], function ($router) {
         Route::post('/logout',      [ AuthController::class, 'logout'   ]);
     });
 
-    Route::middleware(['api_jwt_auth'])->group(function () {
+    Route::middleware(['api_jwt_auth', 'admin_access'])->group(function () {
         
         Route::prefix('admin')->group(function () {
-            Route::get('/movies',                        [ MovieController::class, 'getAllMovies'        ]);
-            Route::get('/movies/{movie_id}',             [ MovieController::class, 'getMovieByID'        ]);
-            Route::post('/movies',                       [ MovieController::class, 'storeNewMovie'       ]);
-            Route::put('/movies/{movie_id}',             [ MovieController::class, 'updateMovie'         ]);
-            Route::put('/movies/availability/{movie_id}',[ MovieController::class, 'updateavailability'  ]);
-            Route::delete('/movies/{movie_id}',          [ MovieController::class, 'deleteMovie'         ]);
-    
-            Route::prefix('movies/posters')->group(function () {
-                Route::get('/{poster_id}',      [ MoviePosterController::class, 'getMoviePoster']);
-                Route::post('/',                [ MoviePosterController::class, 'storeMoviePoster']);
-                Route::delete('/{poster_id}',   [ MoviePosterController::class, 'deleteMoviePoster']);
+            Route::prefix('movies')->group(function () {
+                Route::get('/',                     [ MovieController::class, 'getAllMovies'        ]);
+                Route::get('/{movie_id}',           [ MovieController::class, 'getMovieByID'        ]);
+                Route::post('/',                    [ MovieController::class, 'storeNewMovie'       ]);
+                Route::put('/{movie_id}',           [ MovieController::class, 'updateMovie'         ]);
+                Route::put('/remove/{movie_id}',    [ MovieController::class, 'removeMovie'         ]);
+                Route::delete('/{movie_id}',        [ MovieController::class, 'deleteMovie'         ]);
+
+                Route::prefix('posters')->group(function () {
+                    Route::get('/{poster_id}',          [ MoviePosterController::class, 'getMoviePoster']);
+                    Route::post('/',                    [ MoviePosterController::class, 'storeMoviePoster']);
+                    Route::delete('/{poster_id}',       [ MoviePosterController::class, 'deleteMoviePoster']);
+                });
             });
         });
 

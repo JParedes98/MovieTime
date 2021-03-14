@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\MoviePosterController;
 
@@ -27,20 +28,27 @@ Route::group([ 'prefix' => 'v1'], function () {
     });
 
     Route::middleware(['api_jwt_auth', 'admin_access'])->group(function () {
-        
+
         Route::prefix('admin')->group(function () {
+
+            Route::prefix('users')->group(function () {
+                Route::get('/',                     [ UserController::class, 'getAllUsers'              ]);
+                Route::put('/{user_id}',            [ UserController::class, 'updateUserRol'            ]);
+                Route::delete('/{user_id}',         [ UserController::class, 'deleteUser'               ]);
+            });
+
             Route::prefix('movies')->group(function () {
-                Route::get('/',                     [ MovieController::class, 'getAllMovies'        ]);
-                Route::get('/{movie_id}',           [ MovieController::class, 'getMovieByID'        ]);
-                Route::post('/',                    [ MovieController::class, 'storeNewMovie'       ]);
-                Route::put('/{movie_id}',           [ MovieController::class, 'updateMovie'         ]);
-                Route::put('/remove/{movie_id}',    [ MovieController::class, 'removeMovie'         ]);
-                Route::delete('/{movie_id}',        [ MovieController::class, 'deleteMovie'         ]);
+                Route::get('/',                     [ MovieController::class, 'getAllMovies'            ]);
+                Route::get('/{movie_id}',           [ MovieController::class, 'getMovieByID'            ]);
+                Route::post('/',                    [ MovieController::class, 'storeNewMovie'           ]);
+                Route::put('/{movie_id}',           [ MovieController::class, 'updateMovie'             ]);
+                Route::put('/remove/{movie_id}',    [ MovieController::class, 'removeMovie'             ]);
+                Route::delete('/{movie_id}',        [ MovieController::class, 'deleteMovie'             ]);
 
                 Route::prefix('posters')->group(function () {
-                    Route::get('/{poster_id}',          [ MoviePosterController::class, 'getMoviePoster']);
-                    Route::post('/',                    [ MoviePosterController::class, 'storeMoviePoster']);
-                    Route::delete('/{poster_id}',       [ MoviePosterController::class, 'deleteMoviePoster']);
+                    Route::get('/{poster_id}',      [ MoviePosterController::class, 'getMoviePoster'    ]);
+                    Route::post('/',                [ MoviePosterController::class, 'storeMoviePoster'  ]);
+                    Route::delete('/{poster_id}',   [ MoviePosterController::class, 'deleteMoviePoster' ]);
                 });
             });
         });

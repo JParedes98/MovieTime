@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 
 class MoviePosterController extends Controller
 {
+     /**
+     * Create a new MoviePosterController instance.
+     *
+     * @return void
+     */
+    public function __construct() {
+        $this->middleware('admin_access', [ 'except' => [] ]);
+    }
+
     /**
      * Send movie poster with specified ID.
      */

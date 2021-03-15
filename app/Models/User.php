@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Rent;
 use App\Models\Movie;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -51,7 +52,14 @@ class User extends Authenticatable implements JWTSubject
      * Get all liked movies for the User
     */
     public function likedMovies() {
-        return $this->belongsToMany(Movie::class, 'likes')->withTimestamps();;
+        return $this->belongsToMany(Movie::class, 'likes')->withTimestamps();
+    }
+
+    /**
+     * Get all rented movies for the User
+    */
+    public function rentedMovies() {
+        return $this->hasMany(Rent::class);
     }
 
     //----------------------------------------------------------------------------------------------------------------------------

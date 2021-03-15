@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\User;
+use App\Models\Rent;
 use App\Models\MoviePoster;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,5 +44,12 @@ class Movie extends Model
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();;
     }
 
+    /**
+     * Get all Rentals for the Movie
+     *
+    */
+    public function rentals() {
+        return $this->hasMany(Rent::class);
+    }
     //----------------------------------------------------------------------------------------------------------------------------
 }

@@ -21,7 +21,7 @@ class AdministratorAccess
         $user = auth()->user();
 
         if(!$user || !$user->is_admin) {
-            abort(401, 'You do not have administrator access.');
+            return response()->json([ 'mesage' => 'You do not have administrator access.' ], 401);
         }
 
         return $next($request);

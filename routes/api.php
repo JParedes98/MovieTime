@@ -30,9 +30,12 @@ Route::group([ 'prefix' => 'v1'], function () {
 
     // AUTHENTICATION ROUTES
     Route::prefix('auth')->group(function () {
-        Route::post('/login',       [ AuthController::class, 'login'    ]);
-        Route::post('/register',    [ AuthController::class, 'register' ]);
-        Route::post('/logout',      [ AuthController::class, 'logout'   ]);
+        Route::post('/login',                       [ AuthController::class, 'login'                         ]);
+        Route::post('/register',                    [ AuthController::class, 'register'                      ]);
+        Route::post('/logout',                      [ AuthController::class, 'logout'                        ]);
+        
+        Route::post('/forgot-password',             [ AuthController::class, 'forgotPassword'                ]);
+        Route::post('/reset-password',              [ AuthController::class, 'resetPassword'                 ]);
     });
 
 
@@ -41,7 +44,7 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::get('/movies',                       [ MovieController::class, 'getMoviesForRentOrBuy'        ]);
         Route::get('/movies/{movie_id?}',           [ MovieController::class, 'getMovieDetails'              ]);
 
-        Route::group([ 'prefix' => 'movies', 'middleware' => ['api_jwt_auth']], function () {
+        Route::group([ 'prefix' => 'movies', 'middleware' => ['api_jwt_auth', 'account_verification']], function () {
             Route::post('/rent',                    [ MovieController::class, 'rentMovie'                    ]);
             Route::post('/returnRentedMovie',       [ MovieController::class, 'returnRentedMovie'            ]);
             Route::post('/purchase',                [ MovieController::class, 'purchaseMovie'                ]);
@@ -52,7 +55,7 @@ Route::group([ 'prefix' => 'v1'], function () {
 
 
     // ADMIN ROUTES
-    Route::group([ 'prefix' => 'admin', 'middleware' => ['api_jwt_auth', 'admin_access']], function () {
+    Route::group([ 'prefix' => 'admin', 'middleware' => ['api_jwt_auth', 'admin_access', 'account_verification']], function () {
         Route::prefix('users')->group(function () {
             Route::get('/',                         [ UserAdminController::class, 'getAllUsers'              ]);
             Route::put('/{user_id}',                [ UserAdminController::class, 'updateUserRol'            ]);

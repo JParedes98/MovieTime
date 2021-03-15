@@ -4,8 +4,9 @@ namespace App\Http\Controllers\General;
 
 use Validator;
 use Carbon\Carbon;
-use App\Models\Movie;
 use App\Models\Rent;
+use App\Models\Movie;
+use App\Models\Purchase;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -66,15 +67,15 @@ class MovieController extends Controller
             return response()->json($validator->messages(), 200);
         }
 
-        $movie = Movie::findOrFail($request->movie_id);
+        $movie = Movie::where('availability', 1)->findOrFail($request->movie_id);
         $user = auth()->user();
-
-        if($movie->stock == 0) {
-            return response()->json([ 'message' => 'Movie out of stock.'], 400);
-        }
 
         if(!$movie->availability) {
             return response()->json([ 'message' => 'Movie not available.'], 400);
+        }
+
+        if($movie->stock == 0) {
+            return response()->json([ 'message' => 'Movie out of stock.'], 400);
         }
 
         $rent = Rent::create([
@@ -118,8 +119,45 @@ class MovieController extends Controller
     }
 
     /**
-     * Buy the movie with the specified ID.
+     * Purchase the movie with the specified ID.
     */
-    public function buyMovie(Request $request) {
+    public function purchaseMovie(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'movie_id'  => 'required|integer',
+            'quantity'  => 'required|integer|min:1'
+        ]);
+
+        if ($validator->fails()) {    
+            return response()->json($validator->messages(), 200);
+        }
+
+        $movie = Movie::where('availability', 1)->findOrFail($request->movie_id);
+        $user = auth()->user();
+
+        if(!$movie->availability) {
+            return response()->json([ 'message' => 'Movie not available.'], 400);
+        }
+
+        if($movie->stock == 0 || $movie->stock < $request->quantity) {
+            return response()->json([ 'message' => 'Movie out of stock.'], 400);
+        }
+
+        $sub_total = $movie->sale_price*$request->quantity;
+        $taxes = $sub_total*0.15;
+
+        $purchase = Purchase::create([
+            'movie_id'      => $movie->id,
+            'user_id'       => $user->id,
+            'quantity'      => $request->quantity,
+            'sub_total'     => $sub_total,
+            'taxes'         => $taxes,
+            'total'         => $sub_total + $taxes,
+            'purchased_at'  => Carbon::now()
+        ]);
+
+        $movie->stock = $movie->stock - $request->quantity;
+        $movie->save();
+
+        return response()->json($purchase, 200);
     }
 }

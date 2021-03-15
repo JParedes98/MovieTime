@@ -44,8 +44,7 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::group([ 'prefix' => 'movies', 'middleware' => ['api_jwt_auth']], function () {
             Route::post('/rent',                    [ MovieController::class, 'rentMovie'                    ]);
             Route::post('/returnRentedMovie',       [ MovieController::class, 'returnRentedMovie'            ]);
-
-            Route::post('/buy',                     [ MovieController::class, 'buyMovie'                     ]);
+            Route::post('/purchase',                [ MovieController::class, 'purchaseMovie'                ]);
             Route::post('/like',                    [ LikeController::class, 'likeMovie'                     ]);
             Route::post('/unlike',                  [ LikeController::class, 'unlikeMovie'                   ]);
         });        

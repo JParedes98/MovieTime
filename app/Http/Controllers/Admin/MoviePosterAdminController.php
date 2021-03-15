@@ -1,22 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Response;
 use Validator;
 use App\Models\Movie;
 use App\Models\MoviePoster;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class MoviePosterController extends Controller
+class MoviePosterAdminController extends Controller
 {
      /**
-     * Create a new MoviePosterController instance.
+     * Create a new MoviePosterAdminController instance.
      *
      * @return void
      */
     public function __construct() {
         $this->middleware('admin_access', [ 'except' => [] ]);
+        $this->middleware('api_jwt_auth', [ 'except' => [] ]);
     }
 
     /**

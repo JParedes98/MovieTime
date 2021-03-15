@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Movie;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -43,6 +44,17 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
+
+    //------------------------------------------------------- RELATIONSHIPS -------------------------------------------------------
+
+    /**
+     * Get all liked movies for the User
+    */
+    public function likedMovies() {
+        return $this->belongsToMany(Movie::class, 'likes')->withTimestamps();;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------
 
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Models\MoviePoster;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,14 +25,23 @@ class Movie extends Model
         'availability'
     ];
 
-    // RELATIONSHIPS
+    //------------------------------------------------------- RELATIONSHIPS -------------------------------------------------------
+
     /**
      * Get all of the MoviePoster for this Movie
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
     */
-    public function posters(): HasMany
-    {
+    public function posters() {
         return $this->hasMany(MoviePoster::class);
     }
+
+    /**
+     * Get the users who liked the Movie
+     *
+     */
+    public function usersLikes() {
+        return $this->belongsToMany(User::class, 'likes')->withTimestamps();;
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------
 }

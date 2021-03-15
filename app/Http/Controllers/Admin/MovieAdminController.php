@@ -1,30 +1,47 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use Validator;
 use App\Models\Movie;
 use App\Models\MoviePoster;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class MovieController extends Controller
-{
+class MovieAdminController extends Controller {
      /**
-     * Create a new MovieController instance.
+     * Create a new MovieAdminController instance.
      *
      * @return void
      */
     public function __construct() {
         $this->middleware('admin_access', [ 'except' => [] ]);
+        $this->middleware('api_jwt_auth', [ 'except' => [] ]);
     }
 
     /**
      * Send a listing of all movies.
      */
-    public function getAllMovies() {
-        $movies = Movie::all();
+    public function getAllMovies(Request $request) {
 
-        return response()->json($movies, 200);
+        try {
+            if ($request->has('availability')) {
+                $movies = Movie::where('availability', $request->availability)
+                                ->orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                                ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
+
+                return response()->json($movies, 200);
+            } else {
+                $movies = Movie::orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                                ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
+
+                return response()->json($movies, 200);
+            }
+
+        } catch (\Exception $e) {
+            throw $e;
+        }
+
     }
 
     /**

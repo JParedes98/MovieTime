@@ -22,14 +22,15 @@ class MoviePoster extends Model
         'object',
     ];
 
-    // RELATIONSHIPS
+    //------------------------------------------------------- RELATIONSHIPS -------------------------------------------------------
+
     /**
      * Get the movie that owns the MoviePoster
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
     */
-    public function movie(): BelongsTo
-    {
+    public function movie() {
         return $this->belongsTo(Movie::class);
     }
+
+    //----------------------------------------------------------------------------------------------------------------------------
 }

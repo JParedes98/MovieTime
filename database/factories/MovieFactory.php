@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Movie;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class MovieFactory extends Factory
@@ -22,7 +23,12 @@ class MovieFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => Str::random(50),
+            'description' => Str::random(250),
+            'stock' => rand(0, 1000),
+            'rental_price' => rand(0, 10000),
+            'sale_price' => rand(0, 10000),
+            'availability' => rand(0, 1),
         ];
     }
 }

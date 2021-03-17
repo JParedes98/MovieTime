@@ -42,17 +42,17 @@
                                 </span>
                             </td>
                             <td>
-                                <b-button @click="UpdateUserRol(item)" :variant="!item.is_admin ? 'danger' : 'primary'">
+                                <b-button @click="UpdateUserRol(item)" :variant="!item.is_admin ? 'warning' : 'secondary'">
                                     <span v-if="item.is_admin" v-b-tooltip.hover title="Add Admin Permission">
-                                        <i class="fas fa-user-shield"></i> Add Admin
+                                        <i class="fas fa-user-shield"></i>
                                     </span>
                                     <span v-else v-b-tooltip.hover title="Remove Admin Permission">
-                                        <i class="fas fa-user-times"></i> Remove Admin
+                                        <i class="fas fa-user-times"></i>
                                     </span>
                                 </b-button>
                                 <b-button @click="DeleteUser(item)" variant="danger">
                                     <span v-b-tooltip.hover title="Delete User">
-                                        <i class="far fa-trash-alt"></i> Delete
+                                        <i class="far fa-trash-alt"></i>
                                     </span>
                                 </b-button>
                             </td>
@@ -95,13 +95,19 @@ import Pagination from "laravel-vue-pagination";
         },
 
         created() {
-            this.user = localStorage.getItem('mt_user');
+            this.user = JSON.parse(localStorage.getItem('mt_user'));
             this.GetUsers();
         },
 
         methods: {
             GetUsers(page = 1) {
-                axios.get('/api/v1/admin/users?page=' + page)
+                var token = localStorage.getItem('mt_token');
+
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                axios.get('/api/v1/admin/users?page=' + page, null, config)
                     .then((res) => {
                         this.users = res.data;
                     })
@@ -121,13 +127,19 @@ import Pagination from "laravel-vue-pagination";
             },
 
             UpdateUserRol(user) {
-                axios.put('/api/v1/admin/users/' + user.id)
+                var token = localStorage.getItem('mt_token');
+
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                axios.put('/api/v1/admin/users/' + user.id, null, config)
                     .then((res) => {
                         this.GetUsers();
                         Vue.swal({
                             toast: true,
-                            icon: 'error',
-                            title: '¡Ups!',
+                            icon: 'success',
+                            title: '¡Great!',
                             text: 'User updated successfully.',
                             position: 'bottom-end',
                             showConfirmButton: false,
@@ -141,7 +153,7 @@ import Pagination from "laravel-vue-pagination";
                             toast: true,
                             icon: 'error',
                             title: '¡Ups!',
-                            text: 'Users not loaded',
+                            text: 'Error updating user.',
                             position: 'bottom-end',
                             showConfirmButton: false,
                             timer: 3000,
@@ -151,13 +163,19 @@ import Pagination from "laravel-vue-pagination";
             },
 
             DeleteUser(user) {
-                axios.delete('/api/v1/admin/users/' + user.id)
+                var token = localStorage.getItem('mt_token');
+
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                axios.delete('/api/v1/admin/users/' + user.id, null, config)
                     .then((res) => {
                         this.GetUsers();
                         Vue.swal({
                             toast: true,
-                            icon: 'error',
-                            title: '¡Ups!',
+                            icon: 'success',
+                            title: '¡Great!',
                             text: 'User deleted successfully.',
                             position: 'bottom-end',
                             showConfirmButton: false,
@@ -171,7 +189,7 @@ import Pagination from "laravel-vue-pagination";
                             toast: true,
                             icon: 'error',
                             title: '¡Ups!',
-                            text: 'Users not loaded',
+                            text: 'Error updating user.',
                             position: 'bottom-end',
                             showConfirmButton: false,
                             timer: 3000,

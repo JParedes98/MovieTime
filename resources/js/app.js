@@ -21,7 +21,8 @@ Vue.use(require("vue-moment"), {
 });
 
 const routes = [
-    { path: "/", component: require("./pages/Movies.vue").default, },
+    { path: "/", component: require("./pages/Movies.vue").default },
+    { path: "/movies/:movie_id", component: require("./pages/Movies/ShowMovie.vue").default, },
     { path: "/users", component: require("./pages/Users.vue").default, },
 
     { path: "/login", component: require("./pages/auth/Login.vue").default },

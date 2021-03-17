@@ -22,6 +22,15 @@ class MoviePoster extends Model
         'object',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'movie_id', 'extension', 'object',
+    ];
+
     //------------------------------------------------------- RELATIONSHIPS -------------------------------------------------------
 
     /**

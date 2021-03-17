@@ -22,15 +22,8 @@ class CreateUsersTable extends Migration
             $table->boolean('is_admin')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
-
-        User::create([
-            'name'              => 'Admin User',
-            'email'             => 'admin@movietime.com',
-            'password'          => Hash::make('admin123'),
-            'is_admin'          => true,
-            'email_verified_at' => Carbon\Carbon::now()
-        ]);
     }
 
     /**

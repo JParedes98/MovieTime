@@ -11,6 +11,12 @@
                         <h2 class="font-weight-bold text-center text-muted my-4">¡NEW ACCOUNT!</h2>
                     </div>
 
+                    <div class="form-group" v-if="email_verification">
+                        <b-alert class="text-center my-4" variant="primary" show dismissible>
+                            We sent you and email to verify your account.
+                        </b-alert>
+                    </div>
+
                     <div class="form-group">
                         <label class="font-weight-bold text-muted" for="name"><i class="far fa-user"></i>&nbsp;Name</label>
                         <input type="text" v-model="name" :class="{ 'is-invalid': validation.hasError('name')}" class="form-control" id="name" placeholder="Jose Paredes">
@@ -61,6 +67,7 @@ export default {
             email: '',
             password: '',
             repeat: '',
+            email_verification: false,
         };
     },
 
@@ -108,15 +115,12 @@ export default {
                         Vue.swal({
                             icon: 'success',
                             title: '¡Great!',
-                            text: 'Welcome to Movie Time.',
+                            text: 'Welcome to Movie Time. We sent you an email verification, please verify your account.',
                             showConfirmButton: false,
-                            timer: 1500,
+                            timer: 5000,
                             timerProgressBar: true,
                         });
-                        localStorage.setItem('mt_token', res.data.access_token);
-                        localStorage.setItem('mt_user', JSON.stringify(res.data.user));
-
-                        this.$router.push('/');
+                        this.email_verification = true;
                     })
                     .catch(function (error) {
                         console.log(error);

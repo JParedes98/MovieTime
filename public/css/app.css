@@ -11053,7 +11053,6 @@ img {
   margin: 14px;
   border-radius: 12px;
   box-shadow: 0px 10px 42px 0px rgba(0, 0, 0, 0.35);
-  cursor: pointer;
 }
 
 .movie_card img {
@@ -11064,10 +11063,6 @@ img {
 
 .movie_info {
   color: #5e5c5c;
-}
-
-.movie_info i {
-  font-size: 20px;
 }
 
 .card-title {

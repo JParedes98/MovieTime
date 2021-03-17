@@ -44,6 +44,7 @@ Route::group([ 'prefix' => 'v1'], function () {
     Route::group([], function () {
         Route::get('/movies',                       [ MovieController::class, 'getMoviesForRentOrBuy'        ]);
         Route::get('/movies/{movie_id?}',           [ MovieController::class, 'getMovieDetails'              ]);
+        Route::get('/movies/posters/{poster_id}',   [ MoviePosterAdminController::class, 'getMoviePoster'    ]);
 
         Route::group([ 'prefix' => 'movies', 'middleware' => ['api_jwt_auth', 'account_verification']], function () {
             Route::post('/rent',                    [ MovieController::class, 'rentMovie'                    ]);
@@ -72,7 +73,6 @@ Route::group([ 'prefix' => 'v1'], function () {
             Route::delete('/{movie_id}',            [ MovieAdminController::class, 'deleteMovie'             ]);
 
             Route::prefix('posters')->group(function () {
-                Route::get('/{poster_id}',          [ MoviePosterAdminController::class, 'getMoviePoster'    ]);
                 Route::post('/',                    [ MoviePosterAdminController::class, 'storeMoviePoster'  ]);
                 Route::delete('/{poster_id}',       [ MoviePosterAdminController::class, 'deleteMoviePoster' ]);
             });

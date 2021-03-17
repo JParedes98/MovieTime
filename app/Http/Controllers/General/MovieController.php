@@ -30,6 +30,7 @@ class MovieController extends Controller
                             ->where('availability', 1)
                             ->orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
                             ->select('id', 'title', 'description', 'stock', 'rental_price', 'sale_price')
+                            ->with('posters')
                             ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
             return response()->json($movies, 200);
@@ -38,6 +39,7 @@ class MovieController extends Controller
             $movies = Movie::where('availability', 1)
                             ->orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
                             ->select('id', 'title', 'description', 'stock', 'rental_price', 'sale_price')
+                            ->with('posters')
                             ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
             return response()->json($movies, 200);
@@ -50,6 +52,7 @@ class MovieController extends Controller
     public function getMovieDetails(Request $request, $movie_id) {
         $movie = Movie::where('availability', 1)
                         ->select('id', 'title', 'description', 'stock', 'rental_price', 'sale_price')
+                        ->with('posters')
                         ->findOrFail($movie_id);
 
         return response()->json($movie, 200);

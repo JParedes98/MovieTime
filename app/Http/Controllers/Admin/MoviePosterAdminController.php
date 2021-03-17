@@ -17,8 +17,8 @@ class MoviePosterAdminController extends Controller
      * @return void
      */
     public function __construct() {
-        $this->middleware('admin_access', [ 'except' => [] ]);
-        $this->middleware('api_jwt_auth', [ 'except' => [] ]);
+        $this->middleware('admin_access', [ 'except' => ['getMoviePoster'] ]);
+        $this->middleware('api_jwt_auth', [ 'except' => ['getMoviePoster'] ]);
     }
 
     /**

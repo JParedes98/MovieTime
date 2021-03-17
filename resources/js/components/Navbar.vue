@@ -3,7 +3,12 @@
         <div class="container">
             <router-link class="navbar-brand" tag="a" to="/">
                 <img src="/logo.png" width="35px" alt="">
-                <span class="font-weight-bolder" style="vertical-align: middle; font-size: 18px;">MOVIE TIME</span>
+                <span class="font-weight-bolder" style="vertical-align: middle; font-size: 18px;">
+                    MOVIE TIME
+                </span>
+                <span class="text-light" v-if="user" style="vertical-align: middle; font-size: 18px;">
+                   | {{ user.name }}
+                </span>
             </router-link>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -45,14 +50,19 @@
 
         methods: {
             Logout() {
-                axios.post('/api/v1/auth/logout')
+                var token = localStorage.getItem('mt_token');
+
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                axios.post('/api/v1/auth/logout', null, config)
                     .then((res) => {
                         localStorage.removeItem('mt_token');
                         localStorage.removeItem('mt_user');
                         this.$router.push('/login');
                     })
                     .catch(function (error) {
-                        console.log(error);
                         Vue.swal({
                             toast: true,
                             icon: 'error',

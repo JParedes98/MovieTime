@@ -55,7 +55,7 @@ export default {
                 headers: { Authorization: `Bearer ${token}` }
             };
 
-            axios.post('/api/v1/auth/email-verification', config)
+            axios.post('/api/v1/auth/email-verification',null, config)
                 .then((res) => {
                     Vue.swal({
                         icon: 'success',

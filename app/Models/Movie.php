@@ -7,13 +7,14 @@ use App\Models\Rent;
 use App\Models\MoviePoster;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Movie extends Model
 {
-    use HasFactory, LogsActivity;
+    use HasFactory, SoftDeletes, LogsActivity;
 
-    protected static $logAttributes = ['title', 'description', 'stock', 'rental_price', 'sale_price', 'availability'];
+    protected static $logAttributes = ['title', 'rental_price', 'sale_price'];
 
 
     /**

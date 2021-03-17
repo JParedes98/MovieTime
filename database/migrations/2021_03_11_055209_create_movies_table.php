@@ -19,13 +19,10 @@ class CreateMoviesTable extends Migration
             $table->string('description', 750);
             $table->unsignedBigInteger('stock')->default(0);
             $table->boolean('availability')->default(false);
-
             $table->decimal('rental_price')->default(00.00);
-            // $table->decimal('rental_price_type')->default(00.00);
-            // $table->decimal('late_fee')->default(00.00);
-
             $table->decimal('sale_price')->default(00.00);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

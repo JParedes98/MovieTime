@@ -4,8 +4,6 @@
         <h2 class="text-muted text-center font-weight-bold">NEW <span class="text-primary">MOVIE</span></h2>
     </div>
 
-    <br>
-
     <div class="form-group">
         <label class="text-muted font-weight-bold" for="movie.title">Title</label>
         <input type="text" v-model="movie.title" id="movie.title" :class="{ 'is-invalid': validation.hasError('movie.')}" class="form-control" placeholder="Type here the movie title">
@@ -18,7 +16,7 @@
         <div class="text-danger font-weight-bold">{{ validation.firstError('movie.description') }}</div>
     </div>
 
-    <div class="form-group text-center mt-3">
+    <div class="form-group text-center">
         <label class="switch">
             <input type="checkbox" v-model="movie.availability" id="is_parent" name="is_parent" checked />
             <span class="slider round"></span>
@@ -29,20 +27,30 @@
 
     <div class="form-group">
         <label class="text-muted font-weight-bold" for="movie.stock">Stock</label>
-        <input type="tel" v-model="movie.stock" id="movie.stock" :class="{ 'is-invalid': validation.hasError('movie.stock')}" class="form-control" placeholder="Type here the movie stock">
+        <input type="number" v-model="movie.stock" id="movie.stock" :class="{ 'is-invalid': validation.hasError('movie.stock')}" class="form-control" placeholder="Type here the movie stock">
         <div class="text-danger font-weight-bold">{{ validation.firstError('movie.stock') }}</div>
     </div>
 
     <div class="form-group">
         <label class="text-muted font-weight-bold" for="movie.rental_price">Rental Price</label>
-        <input type="number" v-model="movie.rental_price" id="movie.rental_price" :class="{ 'is-invalid': validation.hasError('movie.rental_price')}" class="form-control" placeholder="Type here the movie Rental Price">
+        <input type="number" step="0.01" v-model="movie.rental_price" id="movie.rental_price" :class="{ 'is-invalid': validation.hasError('movie.rental_price')}" class="form-control" placeholder="Type here the movie Rental Price">
         <div class="text-danger font-weight-bold">{{ validation.firstError('movie.rental_price') }}</div>
     </div>
 
     <div class="form-group">
         <label class="text-muted font-weight-bold" for="movie.sale_price">Sale Price</label>
-        <input type="number" v-model="movie.sale_price" id="movie.sale_price" :class="{ 'is-invalid': validation.hasError('movie.sale_price')}" class="form-control" placeholder="Type here the movie Sale Price">
+        <input type="number" step="0.01" v-model="movie.sale_price" id="movie.sale_price" :class="{ 'is-invalid': validation.hasError('movie.sale_price')}" class="form-control" placeholder="Type here the movie Sale Price">
         <div class="text-danger font-weight-bold">{{ validation.firstError('movie.sale_price') }}</div>
+    </div>
+
+    <div class="form-group">
+        <label class="text-muted font-weight-bold">Movie Posters</label>
+        <b-form-file
+            v-model="movie.posters"
+            placeholder="Choose a file..."
+            drop-placeholder="Drop file here..."
+        ></b-form-file>
+        <div class="text-danger font-weight-bold">{{ validation.firstError('movie.posters') }}</div>
     </div>
 
     <br>
@@ -68,6 +76,7 @@ export default {
                 stock: null,
                 rental_price: null,
                 sale_price: null,
+                posters: null
             }
         };
     },
@@ -90,19 +99,23 @@ export default {
         'movie.stock': function (value) {
             return Validator.value(value)
                 .required('The movie description field is required.')
-                .float('Only numbers are allowed.');
+                .integer('Only integer numbers are allowed.');
         },
 
         'movie.rental_price': function (value) {
             return Validator.value(value)
                 .required('The movie rental price field is required.')
-                .float('Only integer numbers are allowed.');
+                .float('Only numbers are allowed.');
         },
 
         'movie.sale_price': function (value) {
             return Validator.value(value)
                 .required('The movie rental price field is required.')
                 .float('Only integer numbers are allowed.');
+        },
+        'movie.posters': function (value) {
+            return Validator.value(value)
+                .required('The movie posters are required.');
         },
     },
 
@@ -114,29 +127,36 @@ export default {
                 var formData = new FormData();
                 formData.append('title', this.movie.title);
                 formData.append('description', this.movie.description);
-                formData.append('availability', this.movie.availability);
-                formData.append('stock', this.movie.stok);
+                formData.append('availability', this.movie.availability ? 1 : 0);
+                formData.append('stock', this.movie.stock);
                 formData.append('rental_price', this.movie.rental_price);
                 formData.append('sale_price', this.movie.sale_price);
+                formData.append('posters', this.movie.posters);
 
-                axios.post('/api/v1/admin/movies', formData)
+                var token = localStorage.getItem('mt_token');
+
+                const config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                };
+
+                axios.post('/api/v1/admin/movies', formData, config)
                     .then((res) => {
                         Vue.swal({
                             icon: 'success',
                             title: '¡Great!',
-                            text: 'Movie Create succesfully.',
+                            text: 'Movie Created succesfully.',
                             showConfirmButton: false,
                             timer: 1500,
                             timerProgressBar: true,
                         });
-                        this.$emit('MovieCreated', res.data);
+                        this.$emit('MovieCreated');
                     })
                     .catch(function (error) {
                         Vue.swal({
                             toast: true,
                             icon: 'error',
                             title: '¡Ups!',
-                            text: 'Error al autenticar el usuario.',
+                            text: 'Error creating movie.',
                             position: 'bottom-end',
                             showConfirmButton: false,
                             timer: 3000,

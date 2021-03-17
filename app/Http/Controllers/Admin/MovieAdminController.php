@@ -28,11 +28,13 @@ class MovieAdminController extends Controller {
             if ($request->has('availability')) {
                 $movies = Movie::where('availability', $request->availability)
                                 ->orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                                ->with('posters')
                                 ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
                 return response()->json($movies, 200);
             } else {
                 $movies = Movie::orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                                ->with('posters')
                                 ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
                 return response()->json($movies, 200);
@@ -64,7 +66,7 @@ class MovieAdminController extends Controller {
             'rental_price'  => 'required|numeric',
             'sale_price'    => 'required|numeric',
             'availability'  => 'required|boolean',
-            'posters.*'       => 'sometimes|mimes:jpg,png|max:10240'
+            'posters'       => 'required|max:10240|mimes:jpg,png'
         ]);
 
         if ($validator->fails()) {    
@@ -80,16 +82,12 @@ class MovieAdminController extends Controller {
             'availability'  => $request->availability
         ]);
 
-        if($request->posters) {
-            foreach ($request->posters as $poster) {
-                $file = MoviePoster::create([
-                    'movie_id' => $movie->id,
-                    'name'      => $poster->getClientOriginalName(),
-                    'extension' => $poster->getMimeType(),
-                    'object'    => file_get_contents($poster),
-                ]);
-            }
-        }
+        $file = MoviePoster::create([
+            'movie_id' => $movie->id,
+            'name'      => $request->file('posters')->getClientOriginalName(),
+            'extension' => $request->file('posters')->getMimeType(),
+            'object'    => file_get_contents($request->file('posters')),
+        ]);
 
         return response()->json($movie, 200);
     }

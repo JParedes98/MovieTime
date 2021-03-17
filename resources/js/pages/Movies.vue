@@ -19,10 +19,6 @@
                         <b-button v-b-modal.sort_movies variant="success"><i class="fas fa-filter"></i> Sort</b-button>
                     </b-button-group>
 
-                    <b-modal centered size="sm" hide-header hide-footer id="create_movie" ref="create_movie">
-                        <Create-Movie v-on:MovieCreated="MovieCreated"></Create-Movie>
-                    </b-modal>
-
                     <b-modal centered size="sm" hide-header hide-footer id="sort_movies" ref="sort_movies">
                         <form @submit.prevent="SortMovies()">
                             <div class="form-group">
@@ -70,21 +66,20 @@
 
         <div class="row justify-content-center">
             <div class="card movie_card" v-for="(movie, index) in movies.data" :key="index">
-                <img src="https://www.joblo.com/assets/images/joblo/posters/2019/02/detective-pikachu-trailer-poster-main.jpg" class="card-img-top" alt="">
+                <img :src="'/api/v1/movies/posters/' + movie.posters[0].id" class="card-img-top" alt="">
                 <div class="card-body">
-                    <i class="fas fa-play play_button">
-                    </i>
-                    <br>
-                    <h5 class="card-title">{{ movie.title }}</h5>
-                    <span class="movie_info">2019</span>
-                    <span class="movie_info float-right"><i class="fas fa-star"></i></span>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="text-primary font-weight-bold">{{ movie.title }}</h4>
+                        <div class="d-flex justify-content-center">
+                            <!-- <span v-if="user" style="font-size: 18px;" class="d-block movie_info mx-2"><i class="fas fa-thumbs-up"></i></span> -->
+                            <span @click="DeleteMovie(movie)" v-if="user && user.is_admin" style="font-size: 18px;" class="d-block movie_info mx-2"><i class="far fa-trash-alt text-danger"></i></span>
+                        </div>
+                    </div>
+
+                    <b-button variant="primary" class="my-4" block @click="ShowMovie(movie)">WATCH MOVIE</b-button>
                 </div>
             </div>
         </div>
-
-        <b-modal centered size="md" hide-header hide-footer id="show_movie_details" ref="show_movie_details">
-            <Show-Movie :movie="selected_movie"></Show-Movie>
-        </b-modal>
     </div>
 
     <div class="container" v-else>
@@ -96,24 +91,25 @@
                     UPS!<br />
                     <small>No movies found.</small>
                 </h4>
+                <a href="#" v-if="user && user.is_admin" v-b-modal.create_movie class="btn btn-primary">Create movie</a>
             </div>
         </div>
     </div>
+
+    <b-modal centered size="sm" hide-header hide-footer id="create_movie" ref="create_movie">
+        <Create-Movie v-on:MovieCreated="MovieCreated"></Create-Movie>
+    </b-modal>
 </div>
 </template>
 
 <script>
     import Pagination from "laravel-vue-pagination";
-    import ShowMovie from './Movies/ShowMovie';
     import CreateMovie from './Movies/CreateMovie';
-    import UpdateMovie from './Movies/UpdateMovie';
 
     export default {
         components: {
             'pagination': Pagination,
-            'Show-Movie': ShowMovie,
             'Create-Movie': CreateMovie,
-            'Update-Movie': UpdateMovie,
         },
 
         data: function () {
@@ -157,8 +153,8 @@
                     });
             },
 
-            MovieCreated(new_movie) {
-                this.movie.data.unshift(new_movie);
+            MovieCreated() {
+                this.GetMovies();
             },
 
             SortMovies(page = 1) {
@@ -187,9 +183,36 @@
                     });
             },
 
-            ShowMovieDetails(movie) {
-                this.selected_movie = movie;
-                this.$bvModal.show('show_movie_details');
+            DeleteMovie(movie) {
+                axios.delete('/api/v1/admin/movies/' + movie.id)
+                    .then((res) => {
+                        this.GetMovies();
+                        Vue.swal({
+                            icon: 'success',
+                            title: '¡Great!',
+                            text: 'Movie Deleted succesfully.',
+                            showConfirmButton: false,
+                            timer: 1500,
+                            timerProgressBar: true,
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        Vue.swal({
+                            toast: true,
+                            icon: 'error',
+                            title: '¡Ups!',
+                            text: 'Movies not loaded',
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+            },
+
+            ShowMovie(movie) {
+                this.$router.push('/movies/' + movie.id);
             }
         }
     }

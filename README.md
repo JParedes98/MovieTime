@@ -17,11 +17,13 @@ Movie Time is developed with:
 1) Clone this Github Repository.
 2) Run the command "composer install" inside the repository.
 3) Run the command "npm install" inside the repository.
-4) Run the command "php artisan migrate" (Is optional get random data with command "php artisan migrate --seed").
-5) Run the command "php artisan key:generate".
-6) Run the command "php artisan jwt:secret"
-7) Run the command "php artisan serve" and visit localhost:8000 on your browser.
-8) Ready to go.
+4) Create .env file inside the repository.
+5) Define enviroment variables for connection to database, mailer provider (Check out the .env-example file).
+6) Run the command "php artisan migrate" (Is optional get random data with command "php artisan migrate --seed").
+7) Run the command "php artisan key:generate".
+8) Run the command "php artisan jwt:secret"
+9) Run the command "php artisan serve" and visit localhost:8000 on your browser.
+10) Ready to go.
 
 
 ## License

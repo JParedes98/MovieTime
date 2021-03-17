@@ -23,18 +23,19 @@ class MovieAdminController extends Controller {
      * Send a listing of all movies.
      */
     public function getAllMovies(Request $request) {
-
         try {
             if ($request->has('availability')) {
                 $movies = Movie::where('availability', $request->availability)
-                                ->orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                                ->orderBy($request->has('sort_by_populatity') ? 'usersLikes_count' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
                                 ->with('posters')
+                                ->with('usersLikes')
                                 ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
                 return response()->json($movies, 200);
             } else {
-                $movies = Movie::orderBy($request->has('sort_by_populatity') ? 'stock' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
+                $movies = Movie::orderBy($request->has('sort_by_populatity') ? 'usersLikes_count' : 'title', $request->has('sort_order') ? $request->sort_order : 'desc')
                                 ->with('posters')
+                                ->with('usersLikes')
                                 ->paginate($request->has('paginate_each') ? $request->paginate_each : 10);
 
                 return response()->json($movies, 200);
@@ -43,7 +44,6 @@ class MovieAdminController extends Controller {
         } catch (\Exception $e) {
             throw $e;
         }
-
     }
 
     /**

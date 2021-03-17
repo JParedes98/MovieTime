@@ -44,7 +44,7 @@ class MoviePosterAdminController extends Controller
         ]);
 
         if ($validator->fails()) {    
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 400);
         }
 
         $movie = Movie::findOrFail($request->movie_id);

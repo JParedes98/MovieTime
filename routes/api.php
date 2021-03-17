@@ -33,6 +33,7 @@ Route::group([ 'prefix' => 'v1'], function () {
         Route::post('/login',                       [ AuthController::class, 'login'                         ]);
         Route::post('/register',                    [ AuthController::class, 'register'                      ]);
         Route::post('/logout',                      [ AuthController::class, 'logout'                        ]);
+        Route::post('/email-verification',          [ AuthController::class, 'emailVerification'             ]);
         
         Route::post('/forgot-password',             [ AuthController::class, 'forgotPassword'                ]);
         Route::post('/reset-password',              [ AuthController::class, 'resetPassword'                 ]);

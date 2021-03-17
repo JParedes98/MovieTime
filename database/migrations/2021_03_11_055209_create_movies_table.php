@@ -15,8 +15,8 @@ class CreateMoviesTable extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description');
+            $table->string('title', 250);
+            $table->string('description', 750);
             $table->unsignedBigInteger('stock')->default(0);
             $table->boolean('availability')->default(false);
 

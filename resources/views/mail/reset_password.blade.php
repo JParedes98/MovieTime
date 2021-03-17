@@ -465,11 +465,12 @@
                 <table class="email-content" width="100%" cellpadding="0" cellspacing="0" role="presentation">
                     <tr>
                         <td class="email-masthead">
-                            <a href="{{ env('APP_URL') }}" class="f-fallback email-masthead_name">
+                            <a href="{{ env('APP_URL') . '/#/reset-password/' . $token }}" class="f-fallback email-masthead_name">
                                 Movie Time
                             </a>
                         </td>
                     </tr>
+
                     <!-- Email Body -->
                     <tr>
                         <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
@@ -492,7 +493,7 @@
                                                             role="presentation">
                                                             <tr>
                                                                 <td align="center">
-                                                                    <a href="{{ env('APP_URL') }}"
+                                                                    <a href="{{ env('APP_URL') . '/#/reset-password/' . $token }}"
                                                                         class="f-fallback button"
                                                                         target="_blank">Reset your password</a>
                                                                 </td>
@@ -511,7 +512,7 @@
                                                         <p class="f-fallback sub">If you’re having trouble with the
                                                             button above, copy and paste the URL below into your web
                                                             browser.</p>
-                                                        <p class="f-fallback sub">{{ env('APP_URL') }}</p>
+                                                        <p class="f-fallback sub">{{ env('APP_URL') . '/#/reset-password/' . $token }}</p>
                                                     </td>
                                                 </tr>
                                             </table>

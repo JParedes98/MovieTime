@@ -23,8 +23,8 @@ class MovieFactory extends Factory
     public function definition()
     {
         return [
-            'title' => Str::random(50),
-            'description' => Str::random(250),
+            'title' => $this->faker->sentence($nbWords = 6, $variableNbWords = true),
+            'description' => $this->faker->paragraph,
             'stock' => rand(0, 1000),
             'rental_price' => rand(0, 10000),
             'sale_price' => rand(0, 10000),

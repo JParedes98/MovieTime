@@ -22,7 +22,7 @@ class UserAdminController extends Controller
      * Display a listing of the users.
      */
     public function getAllUsers() {
-        $users = User::all();
+        $users = User::paginate(10);
         return response()->json($users, 200);
     }
 

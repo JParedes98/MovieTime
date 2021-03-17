@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Validator;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Mail\PasswordReset;
 use Illuminate\Http\Request;
@@ -27,16 +28,16 @@ class AuthController extends Controller
     public function login(Request $request) {
         $validator = Validator::make($request->all(), [
             'email'         => 'required|string|email|max:255',
-            'password'      => 'required|string|min:8|confirmed',
+            'password'      => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {    
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 400);
         }
 
         $credentials = request(['email', 'password']);
 
-        if (! $token = auth()->attempt($credentials)) {
+        if (!$token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -54,7 +55,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {    
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 400);
         }
 
         $user = User::create([
@@ -79,6 +80,17 @@ class AuthController extends Controller
     }
 
     /**
+     * Verify user email.
+    */
+    public function emailVerification() {
+        $user = auth()->user();
+            $user->email_verified_at = Carbon::now();
+        $user->save();
+
+        return response()->json($user, 200);
+    }
+
+    /**
      * Request Reset password and send email with token for password reset.
     */
     public function forgotPassword(Request $request) {
@@ -87,7 +99,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {    
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 400);
         }
 
         $user = User::where('email', $request->email)->first();
@@ -106,7 +118,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {    
-            return response()->json($validator->messages(), 200);
+            return response()->json($validator->messages(), 400);
         }
 
         $user = auth()->user();
@@ -121,9 +133,10 @@ class AuthController extends Controller
     */
     protected function respondWithToken($token) {
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'access_token'  => $token,
+            'token_type'    => 'bearer',
+            'expires_in'    => auth()->factory()->getTTL() * 60,
+            'user'          => auth()->user()
         ]);
     }
 }

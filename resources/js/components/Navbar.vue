@@ -12,18 +12,60 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <router-link tag="a" to="login" class="nav-link" style="font-size: 18px;">
-                            Login
+                    <li class="nav-item" v-show="user && user.is_admin">
+                        <router-link tag="a" to="/users" class="nav-link" style="font-size: 18px;">
+                            Admin Users |
                         </router-link>
                     </li>
-                    <li class="nav-item">
-                        <router-link tag="a" to="register" class="nav-link" style="font-size: 18px;">
+
+                    <li class="nav-item" v-show="!user">
+                        <router-link tag="a" to="/login" class="nav-link" style="font-size: 18px;">
+                            Login |
+                        </router-link>
+                    </li>
+                    <li class="nav-item dropdown" v-show="!user">
+                        <router-link tag="a" to="/register" class="nav-link" style="font-size: 18px;">
                             Register
                         </router-link>
+                    </li>
+                    <li class="nav-item dropdown" v-show="user">
+                        <a href="#" @click="Logout" class="nav-link" style="font-size: 18px;">
+                            Logout
+                        </a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 </template>
+
+<script>
+    export default {
+        props: ['user'],
+
+        methods: {
+            Logout() {
+                axios.post('/api/v1/auth/logout')
+                    .then((res) => {
+                        localStorage.removeItem('mt_token');
+                        localStorage.removeItem('mt_user');
+                        this.$router.push('/login');
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        Vue.swal({
+                            toast: true,
+                            icon: 'error',
+                            title: '¡Ups!',
+                            text: 'Error signing out.',
+                            position: 'bottom-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        });
+                    });
+            }
+        },
+    }
+
+</script>

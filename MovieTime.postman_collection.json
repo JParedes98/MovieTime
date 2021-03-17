@@ -1,0 +1,875 @@
+{
+	"info": {
+		"_postman_id": "bb79c1a0-95cd-4896-8be9-da66ec45c7bc",
+		"name": "MovieTime",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/login?email=admin@movietime.com&password=admin123&password_confirmation=admin123",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@movietime.com"
+								},
+								{
+									"key": "password",
+									"value": "admin123"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "admin123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/register?name=Admin&email=admin@movietime.com&password=admin123&password_confirmation=admin123",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"register"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "Admin"
+								},
+								{
+									"key": "email",
+									"value": "admin@movietime.com"
+								},
+								{
+									"key": "password",
+									"value": "admin123"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "admin123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ForgotPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/forgot-password?email=admin@movietime.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"forgot-password"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@movietime.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetPassword",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/reset-password?password=admin123&password_confirmation=admin123",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "password",
+									"value": "admin123"
+								},
+								{
+									"key": "password_confirmation",
+									"value": "admin123"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "EmailVerification",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:8000/api/v1/auth/email-verification",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"email-verification"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Movies",
+					"item": [
+						{
+							"name": "GetAllMovies",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/v1/admin/movies/?sort_by_popularity=popularity",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"movies",
+										""
+									],
+									"query": [
+										{
+											"key": "search",
+											"value": "test",
+											"description": "title",
+											"disabled": true
+										},
+										{
+											"key": "sort_by_popularity",
+											"value": "popularity",
+											"description": "title by default"
+										},
+										{
+											"key": "sort_order",
+											"value": "desc",
+											"description": "desc or asc (asc by default)",
+											"disabled": true
+										},
+										{
+											"key": "paginate_each",
+											"value": "15",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetMovieByID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/v1/admin/movies/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"movies",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "StoreNewMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "title",
+											"value": "title",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "This is a movie created for development purposes, this is a short description of the movie.",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "430",
+											"type": "text"
+										},
+										{
+											"key": "rental_price",
+											"value": "125",
+											"type": "text"
+										},
+										{
+											"key": "sale_price",
+											"value": "720",
+											"type": "text"
+										},
+										{
+											"key": "availability",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "posters",
+											"type": "file",
+											"src": "/C:/Users/JoseParedes/Desktop/5fd7603f-46c8-4dd3-a928-1d7af1290226.jpeg"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:8000/api/v1/admin/movies",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"movies"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateMovie",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "title",
+											"value": "New Movie Title",
+											"type": "text"
+										},
+										{
+											"key": "description",
+											"value": "The description for movie number 1 has been updated, this updated has its own log in activity_log table.",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "422",
+											"type": "text"
+										},
+										{
+											"key": "rental_price",
+											"value": "125.25",
+											"type": "text"
+										},
+										{
+											"key": "sale_price",
+											"value": "725.5",
+											"type": "text"
+										},
+										{
+											"key": "availability",
+											"value": "0",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "localhost:8000/api/v1/admin/movies/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"movies",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SoftDeleteMovie",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8000/api/v1/admin/movies/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"movies",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTYwMTY5MzQsImV4cCI6MTYxNjAyMDUzNCwibmJmIjoxNjE2MDE2OTM0LCJqdGkiOiJJdEZ1cU1NTnNSNFNKOURsIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.jMkJk0alMvbow0Ate_sKKGeN9ts4Qib1bZKqnplZciI",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "GetAllUsers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/admin/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "UpdateUserAdminField",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/admin/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "SoftDeleteUser",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8000/api/v1/admin/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"users",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"auth": {
+						"type": "bearer",
+						"bearer": [
+							{
+								"key": "token",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTYwMTY5MzQsImV4cCI6MTYxNjAyMDUzNCwibmJmIjoxNjE2MDE2OTM0LCJqdGkiOiJJdEZ1cU1NTnNSNFNKOURsIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.jMkJk0alMvbow0Ate_sKKGeN9ts4Qib1bZKqnplZciI",
+								"type": "string"
+							}
+						]
+					},
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "General",
+			"item": [
+				{
+					"name": "Likes",
+					"item": [
+						{
+							"name": "UnlikeMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/movies/unlike/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"movies",
+										"unlike",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "LikeMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/movies/like/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"movies",
+										"like",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Rentals",
+					"item": [
+						{
+							"name": "RentMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "movie_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/movies/rent",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"movies",
+										"rent"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ReturnMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "rent_id",
+											"value": "1",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/movies/returnRentedMovie",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"movies",
+										"returnRentedMovie"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Purchases",
+					"item": [
+						{
+							"name": "PurchaseMovie",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "movie_id",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "quantity",
+											"value": "3",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8000/api/v1/movies/purchase",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"movies",
+										"purchase"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GetMoviesForRentOrBuy Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/movies",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"movies"
+							],
+							"query": [
+								{
+									"key": "search",
+									"value": "test",
+									"description": "title",
+									"disabled": true
+								},
+								{
+									"key": "sort_by_popularity",
+									"value": null,
+									"description": "title by default",
+									"disabled": true
+								},
+								{
+									"key": "sort_order",
+									"value": "desc",
+									"description": "desc or asc (asc by default)",
+									"disabled": true
+								},
+								{
+									"key": "paginate_each",
+									"value": "15",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMovieDetails",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/movies/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"movies",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetMoviePoster",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8000/api/v1/movies/posters/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"movies",
+								"posters",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE2MTYwMTgwMTAsImV4cCI6MTYxNjAyMTYxMCwibmJmIjoxNjE2MDE4MDEwLCJqdGkiOiJrM0lBMzBTZEpRZjc5Q1ZUIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.i6DmyPXslMiO9YWQtH0N7q8el3OwzYTeEYQS-GxXNno",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

@@ -50,7 +50,8 @@ class MovieAdminController extends Controller {
      * Send movie with specified ID.
      */
     public function getMovieByID($movie_id) {
-        $movie = Movie::findOrFail($movie_id);
+        $movie = Movie::findOrFail($movie_id)
+                        ->with('posters');
 
         return response()->json($movie, 200);
     }
@@ -89,7 +90,9 @@ class MovieAdminController extends Controller {
             'object'    => file_get_contents($request->file('posters')),
         ]);
 
-        return response()->json($movie, 200);
+        $res = Movie::where('id', $movie->id)->with('posters')->firstOrFail();
+
+        return response()->json($res, 200);
     }
 
     /**
@@ -103,7 +106,6 @@ class MovieAdminController extends Controller {
             'rental_price'  => 'sometimes|numeric',
             'sale_price'    => 'sometimes|numeric',
             'availability'  => 'sometimes|boolean',
-            'posters.*'       => 'sometimes|mimes:jpg,png|max:10240'
         ]);
 
         if ($validator->fails()) {    

@@ -50,8 +50,8 @@ Route::group([ 'prefix' => 'v1'], function () {
             Route::post('/rent',                    [ MovieController::class, 'rentMovie'                    ]);
             Route::post('/returnRentedMovie',       [ MovieController::class, 'returnRentedMovie'            ]);
             Route::post('/purchase',                [ MovieController::class, 'purchaseMovie'                ]);
-            Route::post('/like',                    [ LikeController::class, 'likeMovie'                     ]);
-            Route::post('/unlike',                  [ LikeController::class, 'unlikeMovie'                   ]);
+            Route::post('/like/{movie_id}',         [ LikeController::class, 'likeMovie'                     ]);
+            Route::post('/unlike/{movie_id}',       [ LikeController::class, 'unlikeMovie'                   ]);
         });        
     });
 

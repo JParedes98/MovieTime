@@ -19,8 +19,8 @@ class LikeController extends Controller {
     /**
      * Like the movie with the specified ID.
     */
-    public function likeMovie(Request $request) {
-        $movie = Movie::findOrFail($request->movie_id);
+    public function likeMovie(Request $request, $movie_id) {
+        $movie = Movie::findOrFail($movie_id);
         $user = auth()->user();
 
         $user->likedMovies()->attach($movie);
@@ -32,8 +32,8 @@ class LikeController extends Controller {
     /**
      * Unlike the movie with the specified ID.
     */
-    public function unlikeMovie(Request $request) {
-        $movie = Movie::findOrFail($request->movie_id);
+    public function unlikeMovie(Request $request, $movie_id) {
+        $movie = Movie::findOrFail($movie_id);
         $user = auth()->user();
 
         $attach = $user->likedMovies()->detach($movie);

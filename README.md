@@ -14,6 +14,8 @@ Movie Time is developed with:
 - Bootstrap and BootstrapVue.
 
 ## Installing Movie Time
+Before to start make sure [Xamp](https://www.apachefriends.org/es/index.html), [node.js](https://nodejs.org/es/) and [composer](https://getcomposer.org/) are installed in your pc.
+
 1) Clone this Github Repository.
 2) Run the command "composer install" inside the repository.
 3) Run the command "npm install" inside the repository.

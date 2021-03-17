@@ -23,10 +23,10 @@ class DatabaseSeeder extends Seeder
             'email_verified_at' => Carbon::now()
         ]);
 
-        \App\Models\User::factory(1500)->create();
+        \App\Models\User::factory(500)->create();
 
-        $this->call([
-            MovieSeeder::class,
-        ]);
+        // $this->call([
+        //     MovieSeeder::class,
+        // ]);
     }
 }

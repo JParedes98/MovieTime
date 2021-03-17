@@ -111,6 +111,8 @@ class MovieController extends Controller
         $rent->returned_at = Carbon::now();
         if(Carbon::now() > $rent->due_at) {
             $rent->late_fee = 50.00;
+        } else {
+            $rent->late_fee = 0;
         }
         $movie->stock++;
 

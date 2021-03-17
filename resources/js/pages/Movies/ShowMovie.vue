@@ -2,7 +2,7 @@
 <div>
     <navbar :user="user"></navbar>
 
-    <div class="container pt-5 mt-5">
+    <div class="container pt-5 mt-5" v-if="movie">
         <div class="row">
             <div class="col-md-4">
                 <div class="card movie_card">
@@ -16,14 +16,32 @@
             <div class="col-md-8">
                 <div class="card movie_card w-100">
                     <div class="card-body">
-                        <h2 class="font-weight-bold text-primary">{{ movie.title }}</h2>
+                        <div class="d-flex justify-content-between">
+                            <h4 class="text-primary text-center font-weight-bold">{{ movie.title }}</h4>
+                            <h4 class="badge badge-primary">
+                                {{ movie.stock }} in Stock
+                            </h4>
+                        </div>
+
+                        <br>
+
                         <p class="text-muted" style="font-size: 18px;">{{ movie.description }}</p>
+
+                        <div class="mt-5">
+                            <span class="badge badge-primary" style="font-size: 18px;">
+                                ${{ movie.rental_price }} (Rental Price) 
+                            </span>
+
+                            <span class="badge badge-primary" style="font-size: 18px;">
+                                ${{ movie.rental_price }} (Rental Price) 
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row mt-5" v-if="movie.posters.length > 1">
+        <div class="row mt-5" v-if="movie.posters && movie.posters.length > 1">
             <div class="col-md-4" v-for="(poster, index) in movie.posters" :key="index">
                 <hr>
                 <img :src="'/api/v1/movies/posters/' + poster.id" class="card-img-top" alt="">
